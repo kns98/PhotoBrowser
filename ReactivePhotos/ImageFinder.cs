@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reactive.Linq;
+using PhotoAlbum.Logging;
 
 namespace PhotoAlbum
 {
@@ -45,6 +46,7 @@ namespace PhotoAlbum
                     try
                     {
                         bag.Add(fileQuery[indexToGetImageFrom]);
+                        typeof(Log).Info("Added file : " + fileQuery[indexToGetImageFrom].FullName);
                     }
                     catch (Exception ex)
                     {
