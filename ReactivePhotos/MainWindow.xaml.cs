@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using PhotoAlbum.Logging;
 
 namespace PhotoAlbum.Desktop
 {
@@ -10,6 +11,7 @@ namespace PhotoAlbum.Desktop
         public MainWindow()
         {
             InitializeComponent();
+            LogExt.Initialize();
             var service = new ImageFinder();
             DataContext = new SearchViewModel(service);
         }

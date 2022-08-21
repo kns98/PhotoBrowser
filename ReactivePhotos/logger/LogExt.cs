@@ -7,7 +7,7 @@ namespace PhotoAlbum.Logging
 {
     public static class LogExt
     {
-        private static Logger _logger; //NLog logger
+        private static Logger _logger;
 
         public static void Initialize()
         {
