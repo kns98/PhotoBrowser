@@ -1,17 +1,27 @@
-﻿using ReactiveUI;
-using System;
+﻿using System;
 using System.Reactive.Linq;
+using ReactiveUI;
 
 namespace PhotoAlbum
 {
     public class SearchViewModel : ReactiveObject
     {
+        private readonly ObservableAsPropertyHelper<bool> canEnterSearchText;
+
+        private readonly ObservableAsPropertyHelper<bool> isLoading;
+
+        private ReactiveList<SearchResultViewModel> images;
+
+        private string searchText;
+
+        private bool showError;
+
         public SearchViewModel(IImageFinder imageFinder)
         {
             Images = new ReactiveList<SearchResultViewModel>();
 
             var canExecute = this.WhenAnyValue(x => x.SearchText)
-                .Select(x => !String.IsNullOrWhiteSpace(x));
+                .Select(x => !string.IsNullOrWhiteSpace(x));
 
             Search = ReactiveCommand.CreateAsyncObservable(
                 canExecute,
@@ -35,38 +45,26 @@ namespace PhotoAlbum
 
         public ReactiveCommand<SearchResultViewModel> Search { get; set; }
 
-        private string searchText;
         public string SearchText
         {
-            get { return searchText; }
-            set { this.RaiseAndSetIfChanged(ref searchText, value); }
+            get => searchText;
+            set => this.RaiseAndSetIfChanged(ref searchText, value);
         }
 
-        private bool showError;
         public bool ShowError
         {
-            get { return showError; }
-            set { this.RaiseAndSetIfChanged(ref showError, value); }
+            get => showError;
+            set => this.RaiseAndSetIfChanged(ref showError, value);
         }
 
-        private readonly ObservableAsPropertyHelper<bool> isLoading;
-        public bool IsLoading
-        {
-            get { return isLoading.Value; }
-        }
+        public bool IsLoading => isLoading.Value;
 
-        private readonly ObservableAsPropertyHelper<bool> canEnterSearchText;
-        public bool CanEnterSearchText
-        {
-            get { return canEnterSearchText.Value; }
-        }
+        public bool CanEnterSearchText => canEnterSearchText.Value;
 
-        private ReactiveList<SearchResultViewModel> images;
         public ReactiveList<SearchResultViewModel> Images
         {
-            get { return images; }
-            set { this.RaiseAndSetIfChanged(ref images, value); }
+            get => images;
+            set => this.RaiseAndSetIfChanged(ref images, value);
         }
-        
     }
 }

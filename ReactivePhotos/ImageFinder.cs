@@ -2,12 +2,10 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reactive.Linq;
-using Splat;
 
 namespace PhotoAlbum
 {
@@ -35,7 +33,7 @@ namespace PhotoAlbum
 
                 var fileQuery = _fileQuery.ToArray();
 
-                var sel = new FileInfo[10];
+                var sel = new FileInfo[50];
 
                 var random = new Random();
 
@@ -66,7 +64,7 @@ namespace PhotoAlbum
                     //try
                     // {
                     var imageData = resizeImage(photo.Url, 500, 500);
-                    
+
                     observer.OnNext(new SearchResultViewModel(imageData, photo.Title));
 
                     // }

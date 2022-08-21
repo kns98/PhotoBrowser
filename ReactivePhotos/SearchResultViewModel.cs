@@ -1,21 +1,18 @@
-﻿using Splat;
+﻿using System.Drawing;
 using ReactiveUI;
-using System.Drawing;
 
 namespace PhotoAlbum
 {
     public class SearchResultViewModel : ReactiveObject
     {
-        private readonly Bitmap image;
-        private readonly string title;
-
         public SearchResultViewModel(Bitmap image, string title)
         {
-            this.image = image;
-            this.title = title;
+            this.Image = image;
+            this.Title = title;
         }
 
-        public Bitmap Image { get { return image; } }
-        public string Title { get { return title; } }
+        public Bitmap Image { get; }
+
+        public string Title { get; }
     }
 }
