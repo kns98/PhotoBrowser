@@ -12,7 +12,8 @@ namespace PhotoAlbum
 {
     public class ImageFinder : IImageFinder
     {
-        private readonly Random rand = new Random();
+        private static string _str = "Health, Wealth and Happiness";
+        private int hash = _str.GetHashCode();
 
         public IObservable<SearchResultViewModel> GetImages(string searchText)
         {
@@ -36,7 +37,9 @@ namespace PhotoAlbum
 
                 var sel = new FileInfo[50];
 
+
                 var random = new Random();
+                random = new Random(random.Next() + hash);
 
                 var bag = new ConcurrentBag<FileInfo>();
 
@@ -47,6 +50,7 @@ namespace PhotoAlbum
                     {
                         bag.Add(fileQuery[indexToGetImageFrom]);
                         typeof(Log).Info("Added file : " + fileQuery[indexToGetImageFrom].FullName);
+                        File.Copy(fileQuery[indexToGetImageFrom].FullName,@"d:\tmp\" + indexToGetImageFrom + ".jpg");
                     }
                     catch (Exception ex)
                     {
