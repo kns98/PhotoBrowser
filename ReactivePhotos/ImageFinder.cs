@@ -92,7 +92,7 @@ namespace PhotoAlbum
                 var len1 = Math.Min(25, fileQuery1.Length / 10);
                 var len2 = Math.Min(25, fileQuery2.Length / 10);
                 var len3 = Math.Min(25, fileQuery3.Length / 10);
-                var len4 = Math.Min(25, fileQuery4.Length / 10);
+                var len4 = Math.Min(150, fileQuery4.Length / 10);
                 var len5 = Math.Min(25, fileQuery5.Length / 10);
                 var len6 = Math.Min(25, fileQuery6.Length / 10);
 
