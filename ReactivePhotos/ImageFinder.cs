@@ -94,48 +94,65 @@ namespace PhotoAlbum
                 var random = new Random();
                 random = new Random(random.Next() + hash);
 
-                var bag = new ConcurrentBag<FileInfo>();
-
-                for (var i = 0; i < sel.Length; i++)
-                {
-                    var indexToGetImageFrom = random.Next(fileQuery1.Length);
-                    try
-                    {
-                        bag.Add(fileQuery1[indexToGetImageFrom]);
-                        typeof(Log).Info("Added file : " + fileQuery1[indexToGetImageFrom].FullName);
-                        File.Copy(fileQuery1[indexToGetImageFrom].FullName,@"d:\tmp\" + indexToGetImageFrom + ".jpg");
-                    }
-                    catch (Exception ex)
-                    {
-                    }
-                }
+                ConcurrentBag<FileInfo> bag1 = Add(sel, random, fileQuery1);
+                var bag2 = Add(sel, random, fileQuery1);
+                var bag3 = Add(sel, random, fileQuery1);
+                var bag4 = Add(sel, random, fileQuery1);
+                var bag5 = Add(sel, random, fileQuery1);
+                var bag6 = Add(sel, random, fileQuery1);
 
 
-                var photos = bag
-                    .Select(p => new
-                    {
-                        Url = p.FullName,
-                        Title = p.Name
-                    });
-
-                foreach (var photo in photos)
-                {
-                    //try
-                    // {
-                    var imageData = resizeImage(photo.Url, 500, 500);
-
-                    observer.OnNext(new SearchResultViewModel(imageData, photo.Title));
-
-                    // }
-                    //catch (Exception ex)
-                    // {
-                    // Any other kind of error, we want to send to subscribers
-                    //     observer.OnError(ex);
-                    //}
-                }
-
+                var finalCollection = new ConcurrentBag<FileInfo>(bag1.Union(bag2).Union(bag3).Union(bag4).Union(bag5).Union(bag6));
+                Obs(finalCollection, observer);
                 observer.OnCompleted();
             });
+        }
+
+        private static void Obs(ConcurrentBag<FileInfo> bag1, IObserver<SearchResultViewModel> observer)
+        {
+            var photos = bag1
+                .Select(p => new
+                {
+                    Url = p.FullName,
+                    Title = p.Name
+                });
+
+            foreach (var photo in photos)
+            {
+                //try
+                // {
+                var imageData = resizeImage(photo.Url, 500, 500);
+
+                observer.OnNext(new SearchResultViewModel(imageData, photo.Title));
+
+                // }
+                //catch (Exception ex)
+                // {
+                // Any other kind of error, we want to send to subscribers
+                //     observer.OnError(ex);
+                //}
+            }
+        }
+
+        private static ConcurrentBag<FileInfo> Add(FileInfo[] sel, Random random, FileInfo[] fileQuery1)
+        {
+            var bag = new ConcurrentBag<FileInfo>();
+
+            for (var i = 0; i < sel.Length; i++)
+            {
+                var indexToGetImageFrom = random.Next(fileQuery1.Length);
+                try
+                {
+                    bag.Add(fileQuery1[indexToGetImageFrom]);
+                    typeof(Log).Info("Added file : " + fileQuery1[indexToGetImageFrom].FullName);
+                    File.Copy(fileQuery1[indexToGetImageFrom].FullName, @"d:\tmp\" + indexToGetImageFrom + ".jpg");
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+
+            return bag;
         }
 
         public static Bitmap resizeImage(string fileName, int rectHeight, int rectWidth)
