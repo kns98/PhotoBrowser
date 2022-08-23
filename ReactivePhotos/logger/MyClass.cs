@@ -1,5 +1,4 @@
 using System;
-using PhotoAlbum.Logging;
 
 namespace PhotoAlbum.Logging
 {

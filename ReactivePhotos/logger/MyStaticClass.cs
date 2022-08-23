@@ -1,5 +1,3 @@
-using PhotoAlbum.Logging;
-
 namespace PhotoAlbum.Logging
 {
     public static class MyStaticClass

@@ -7,8 +7,8 @@ namespace PhotoAlbum
     {
         public SearchResultViewModel(Bitmap image, string title)
         {
-            this.Image = image;
-            this.Title = title;
+            Image = image;
+            Title = title;
         }
 
         public Bitmap Image { get; }

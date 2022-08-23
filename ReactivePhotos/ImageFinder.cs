@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Reactive.Linq;
 using PhotoAlbum.Logging;
 
@@ -13,7 +12,7 @@ namespace PhotoAlbum
 {
     public class ImageFinder : IImageFinder
     {
-        private static string _str = "Health, Wealth and Happiness";
+        private static readonly string _str = "Health, Wealth and Happiness";
         private int hash = _str.GetHashCode();
 
         public IObservable<SearchResultViewModel> GetImages(string searchText)
@@ -28,7 +27,7 @@ namespace PhotoAlbum
 
                 //BMP, GIF, EXIF, JPG, PNG, and TIFF
 
-                IEnumerable<FileInfo> fileList1 = info.GetFiles("*.bmp", 
+                IEnumerable<FileInfo> fileList1 = info.GetFiles("*.bmp",
                     SearchOption.AllDirectories);
                 IEnumerable<FileInfo> fileList2 = info.GetFiles("*.gif",
                     SearchOption.AllDirectories);
@@ -103,7 +102,8 @@ namespace PhotoAlbum
                 var bag5 = Add(new FileInfo[len5], new Random(), fileQuery5);
                 var bag6 = Add(new FileInfo[len6], new Random(), fileQuery6);
 
-                var finalCollection = new ConcurrentBag<FileInfo>(bag1.Union(bag2).Union(bag3).Union(bag4).Union(bag5).Union(bag6));
+                var finalCollection =
+                    new ConcurrentBag<FileInfo>(bag1.Union(bag2).Union(bag3).Union(bag4).Union(bag5).Union(bag6));
                 Obs(finalCollection, observer);
                 observer.OnCompleted();
             });
