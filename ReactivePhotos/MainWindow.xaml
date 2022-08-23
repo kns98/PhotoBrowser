@@ -14,8 +14,8 @@
 
         <DataTemplate x:Key="imageTemplate">
             <Image Source="{Binding Image, Converter={StaticResource bitmapSourceConverter}}"
-                   Height="300"
-                   Width="300"
+                   Height="500"
+                   Width="500"
                    ToolTip="{Binding Title}" />
         </DataTemplate>
         <ControlTemplate x:Key="scrollViewTemplate">
