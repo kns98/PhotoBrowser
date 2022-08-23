@@ -89,15 +89,19 @@ namespace PhotoAlbum
 
                 var fileQuery6 = _fileQuery6.ToArray();
 
-                var sel = new FileInfo[25];
+                var len1 = Math.Min(25, fileQuery1.Length / 10);
+                var len2 = Math.Min(25, fileQuery2.Length / 10);
+                var len3 = Math.Min(25, fileQuery3.Length / 10);
+                var len4 = Math.Min(25, fileQuery4.Length / 10);
+                var len5 = Math.Min(25, fileQuery5.Length / 10);
+                var len6 = Math.Min(25, fileQuery6.Length / 10);
 
-                ConcurrentBag<FileInfo> bag1 = Add(sel, new Random(), fileQuery1);
-                var bag2 = Add(sel, new Random(), fileQuery2);
-                var bag3 = Add(sel, new Random(), fileQuery3);
-                var bag4 = Add(sel, new Random(), fileQuery4);
-                var bag5 = Add(sel, new Random(), fileQuery5);
-                var bag6 = Add(sel, new Random(), fileQuery6);
-
+                var bag1 = Add(new FileInfo[len1], new Random(), fileQuery1);
+                var bag2 = Add(new FileInfo[len2], new Random(), fileQuery2);
+                var bag3 = Add(new FileInfo[len3], new Random(), fileQuery3);
+                var bag4 = Add(new FileInfo[len4], new Random(), fileQuery4);
+                var bag5 = Add(new FileInfo[len5], new Random(), fileQuery5);
+                var bag6 = Add(new FileInfo[len6], new Random(), fileQuery6);
 
                 var finalCollection = new ConcurrentBag<FileInfo>(bag1.Union(bag2).Union(bag3).Union(bag4).Union(bag5).Union(bag6));
                 Obs(finalCollection, observer);
