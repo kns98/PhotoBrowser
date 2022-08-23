@@ -89,17 +89,14 @@ namespace PhotoAlbum
 
                 var fileQuery6 = _fileQuery6.ToArray();
 
-                var sel = new FileInfo[50];
+                var sel = new FileInfo[25];
 
-                var random = new Random();
-                random = new Random(random.Next() + hash);
-
-                ConcurrentBag<FileInfo> bag1 = Add(sel, random, fileQuery1);
-                var bag2 = Add(sel, random, fileQuery1);
-                var bag3 = Add(sel, random, fileQuery1);
-                var bag4 = Add(sel, random, fileQuery1);
-                var bag5 = Add(sel, random, fileQuery1);
-                var bag6 = Add(sel, random, fileQuery1);
+                ConcurrentBag<FileInfo> bag1 = Add(sel, new Random(), fileQuery1);
+                var bag2 = Add(sel, new Random(), fileQuery2);
+                var bag3 = Add(sel, new Random(), fileQuery3);
+                var bag4 = Add(sel, new Random(), fileQuery4);
+                var bag5 = Add(sel, new Random(), fileQuery5);
+                var bag6 = Add(sel, new Random(), fileQuery6);
 
 
                 var finalCollection = new ConcurrentBag<FileInfo>(bag1.Union(bag2).Union(bag3).Union(bag4).Union(bag5).Union(bag6));
@@ -119,33 +116,22 @@ namespace PhotoAlbum
 
             foreach (var photo in photos)
             {
-                //try
-                // {
                 var imageData = resizeImage(photo.Url, 500, 500);
-
                 observer.OnNext(new SearchResultViewModel(imageData, photo.Title));
-
-                // }
-                //catch (Exception ex)
-                // {
-                // Any other kind of error, we want to send to subscribers
-                //     observer.OnError(ex);
-                //}
             }
         }
 
-        private static ConcurrentBag<FileInfo> Add(FileInfo[] sel, Random random, FileInfo[] fileQuery1)
+        private static ConcurrentBag<FileInfo> Add(FileInfo[] sel, Random random, FileInfo[] query)
         {
             var bag = new ConcurrentBag<FileInfo>();
 
             for (var i = 0; i < sel.Length; i++)
             {
-                var indexToGetImageFrom = random.Next(fileQuery1.Length);
+                var indexToGetImageFrom = random.Next(query.Length);
                 try
                 {
-                    bag.Add(fileQuery1[indexToGetImageFrom]);
-                    typeof(Log).Info("Added file : " + fileQuery1[indexToGetImageFrom].FullName);
-                    File.Copy(fileQuery1[indexToGetImageFrom].FullName, @"d:\tmp\" + indexToGetImageFrom + ".jpg");
+                    bag.Add(query[indexToGetImageFrom]);
+                    typeof(Log).Info("Added file : " + query[indexToGetImageFrom].FullName);
                 }
                 catch (Exception ex)
                 {
