@@ -2,6 +2,8 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 using NLog;
+using NLog.Config;
+using NLog.Targets;
 
 namespace PhotoAlbum.Logging
 {
@@ -12,21 +14,21 @@ namespace PhotoAlbum.Logging
         public static void Initialize()
         {
             _logger = LogManager.GetLogger("Default") ?? LogManager.GetCurrentClassLogger();
-            var config = new NLog.Config.LoggingConfiguration();
-            var logFile = new NLog.Targets.FileTarget()
+            var config = new LoggingConfiguration();
+            var logFile = new FileTarget
             {
                 FileName = "nlog.log",
                 Name = "logfile",
                 Layout = "${level:upperCase=true}:${message}${exception:format=ToString}"
             };
-            var logConsole = new NLog.Targets.ColoredConsoleTarget()
+            var logConsole = new ColoredConsoleTarget
             {
                 Name = "logconsole",
                 Layout = "${level:upperCase=true}:${message}"
             };
 
-            config.LoggingRules.Add(new NLog.Config.LoggingRule("*", LogLevel.Trace, logConsole));
-            config.LoggingRules.Add(new NLog.Config.LoggingRule("*", LogLevel.Debug, logFile));
+            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Trace, logConsole));
+            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, logFile));
 
             LogManager.Configuration = config;
             typeof(LogExt).Trace($"LogExt started. LogExt file: {logFile.FileName}");
@@ -40,7 +42,7 @@ namespace PhotoAlbum.Logging
         {
             if (!_logger.IsTraceEnabled) return;
 
-            var line = BuildLogLine(caller,  message, callerFunction);
+            var line = BuildLogLine(caller, message, callerFunction);
             _logger.Trace(ex, line);
         }
 
@@ -52,7 +54,7 @@ namespace PhotoAlbum.Logging
         {
             if (!_logger.IsInfoEnabled) return;
 
-            var line = BuildLogLine(caller,  message, callerFunction);
+            var line = BuildLogLine(caller, message, callerFunction);
             _logger.Info(ex, line);
         }
 
@@ -64,7 +66,7 @@ namespace PhotoAlbum.Logging
         {
             if (!_logger.IsWarnEnabled) return;
 
-            var line = BuildLogLine(caller,  message, callerFunction);
+            var line = BuildLogLine(caller, message, callerFunction);
             _logger.Warn(ex, line);
         }
 
@@ -75,7 +77,7 @@ namespace PhotoAlbum.Logging
         {
             if (!_logger.IsWarnEnabled) return;
 
-            var line = BuildLogLine(caller,  ex.Message, callerFunction);
+            var line = BuildLogLine(caller, ex.Message, callerFunction);
             _logger.Warn(ex, line);
         }
 
@@ -87,7 +89,7 @@ namespace PhotoAlbum.Logging
         {
             if (!_logger.IsErrorEnabled) return;
 
-            var line = BuildLogLine(caller,  ex.Message, callerFunction);
+            var line = BuildLogLine(caller, ex.Message, callerFunction);
             _logger.Error(ex, line);
         }
 
@@ -108,16 +110,16 @@ namespace PhotoAlbum.Logging
             string message = "",
             string callerFunction = "")
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             var type = caller as Type;
             var callerName = (type != null ? type : caller.GetType()).Name;
             sb.Append($@" {callerName}");
 
-            if (!String.IsNullOrWhiteSpace(callerFunction))
+            if (!string.IsNullOrWhiteSpace(callerFunction))
                 sb.Append($@".{callerFunction}");
 
-            if (!String.IsNullOrWhiteSpace(message))
+            if (!string.IsNullOrWhiteSpace(message))
                 sb.Append($@": {message}");
 
             return sb.ToString();
