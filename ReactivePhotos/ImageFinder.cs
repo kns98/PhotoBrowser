@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Reactive.Linq;
 using PhotoAlbum.Logging;
 
@@ -25,18 +26,70 @@ namespace PhotoAlbum
 
                 var info = new DirectoryInfo(searchText);
 
-                IEnumerable<FileInfo> fileList = info.GetFiles("*.jpg", SearchOption.AllDirectories);
+                //BMP, GIF, EXIF, JPG, PNG, and TIFF
 
-                IEnumerable<FileInfo> _fileQuery =
-                    from file in fileList
+                IEnumerable<FileInfo> fileList1 = info.GetFiles("*.bmp", 
+                    SearchOption.AllDirectories);
+                IEnumerable<FileInfo> fileList2 = info.GetFiles("*.gif",
+                    SearchOption.AllDirectories);
+                IEnumerable<FileInfo> fileList3 = info.GetFiles("*.exif",
+                    SearchOption.AllDirectories);
+                IEnumerable<FileInfo> fileList4 = info.GetFiles("*.jpg",
+                    SearchOption.AllDirectories);
+                IEnumerable<FileInfo> fileList5 = info.GetFiles("*.png",
+                    SearchOption.AllDirectories);
+                IEnumerable<FileInfo> fileList6 = info.GetFiles("*.tiff",
+                    SearchOption.AllDirectories);
+
+                IEnumerable<FileInfo> _fileQuery1 =
+                    from file in fileList1
                     where file.Length > 0
                     orderby file.Name
                     select file;
 
-                var fileQuery = _fileQuery.ToArray();
+                var fileQuery1 = _fileQuery1.ToArray();
+
+                IEnumerable<FileInfo> _fileQuery2 =
+                    from file in fileList2
+                    where file.Length > 0
+                    orderby file.Name
+                    select file;
+
+                var fileQuery2 = _fileQuery2.ToArray();
+
+                IEnumerable<FileInfo> _fileQuery3 =
+                    from file in fileList3
+                    where file.Length > 0
+                    orderby file.Name
+                    select file;
+
+                var fileQuery3 = _fileQuery3.ToArray();
+
+                IEnumerable<FileInfo> _fileQuery4 =
+                    from file in fileList4
+                    where file.Length > 0
+                    orderby file.Name
+                    select file;
+
+                var fileQuery4 = _fileQuery4.ToArray();
+
+                IEnumerable<FileInfo> _fileQuery5 =
+                    from file in fileList5
+                    where file.Length > 0
+                    orderby file.Name
+                    select file;
+
+                var fileQuery5 = _fileQuery5.ToArray();
+
+                IEnumerable<FileInfo> _fileQuery6 =
+                    from file in fileList6
+                    where file.Length > 0
+                    orderby file.Name
+                    select file;
+
+                var fileQuery6 = _fileQuery6.ToArray();
 
                 var sel = new FileInfo[50];
-
 
                 var random = new Random();
                 random = new Random(random.Next() + hash);
@@ -45,12 +98,12 @@ namespace PhotoAlbum
 
                 for (var i = 0; i < sel.Length; i++)
                 {
-                    var indexToGetImageFrom = random.Next(fileQuery.Length);
+                    var indexToGetImageFrom = random.Next(fileQuery1.Length);
                     try
                     {
-                        bag.Add(fileQuery[indexToGetImageFrom]);
-                        typeof(Log).Info("Added file : " + fileQuery[indexToGetImageFrom].FullName);
-                        File.Copy(fileQuery[indexToGetImageFrom].FullName,@"d:\tmp\" + indexToGetImageFrom + ".jpg");
+                        bag.Add(fileQuery1[indexToGetImageFrom]);
+                        typeof(Log).Info("Added file : " + fileQuery1[indexToGetImageFrom].FullName);
+                        File.Copy(fileQuery1[indexToGetImageFrom].FullName,@"d:\tmp\" + indexToGetImageFrom + ".jpg");
                     }
                     catch (Exception ex)
                     {
