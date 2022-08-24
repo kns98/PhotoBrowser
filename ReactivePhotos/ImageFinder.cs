@@ -12,17 +12,11 @@ namespace PhotoAlbum
 {
     public class ImageFinder : IImageFinder
     {
-        private static readonly string _str = "Health, Wealth and Happiness";
-        private int hash = _str.GetHashCode();
 
         public IObservable<SearchResultViewModel> GetImages(string searchText)
         {
             return Observable.Create<SearchResultViewModel>(async observer =>
             {
-                var c = new HttpClient();
-                var address = default(Uri);
-                var searchResults = default(string);
-
                 var info = new DirectoryInfo(searchText);
 
                 //BMP, GIF, EXIF, JPG, PNG, and TIFF
@@ -35,9 +29,11 @@ namespace PhotoAlbum
                     SearchOption.AllDirectories);
                 IEnumerable<FileInfo> fileList4 = info.GetFiles("*.jpg",
                     SearchOption.AllDirectories);
-                IEnumerable<FileInfo> fileList5 = info.GetFiles("*.png",
+                IEnumerable<FileInfo> fileList5 = info.GetFiles("*.jpeg",
+                   SearchOption.AllDirectories);
+                IEnumerable<FileInfo> fileList6 = info.GetFiles("*.png",
                     SearchOption.AllDirectories);
-                IEnumerable<FileInfo> fileList6 = info.GetFiles("*.tiff",
+                IEnumerable<FileInfo> fileList7 = info.GetFiles("*.tiff",
                     SearchOption.AllDirectories);
 
                 IEnumerable<FileInfo> _fileQuery1 =
@@ -88,12 +84,21 @@ namespace PhotoAlbum
 
                 var fileQuery6 = _fileQuery6.ToArray();
 
+                IEnumerable<FileInfo> _fileQuery7 =
+                    from file in fileList7
+                    where file.Length > 0
+                    orderby file.Name
+                    select file;
+
+                var fileQuery7 = _fileQuery7.ToArray();
+
                 var len1 = Math.Min(25, fileQuery1.Length / 10);
                 var len2 = Math.Min(25, fileQuery2.Length / 10);
                 var len3 = Math.Min(25, fileQuery3.Length / 10);
                 var len4 = Math.Min(150, fileQuery4.Length / 10);
-                var len5 = Math.Min(25, fileQuery5.Length / 10);
+                var len5 = Math.Min(150, fileQuery5.Length / 10);
                 var len6 = Math.Min(25, fileQuery6.Length / 10);
+                var len7 = Math.Min(25, fileQuery7.Length / 10);
 
                 var bag1 = Add(new FileInfo[len1], new Random(), fileQuery1);
                 var bag2 = Add(new FileInfo[len2], new Random(), fileQuery2);
@@ -101,9 +106,13 @@ namespace PhotoAlbum
                 var bag4 = Add(new FileInfo[len4], new Random(), fileQuery4);
                 var bag5 = Add(new FileInfo[len5], new Random(), fileQuery5);
                 var bag6 = Add(new FileInfo[len6], new Random(), fileQuery6);
+                var bag7 = Add(new FileInfo[len7], new Random(), fileQuery7);
 
                 var finalCollection =
-                    new ConcurrentBag<FileInfo>(bag1.Union(bag2).Union(bag3).Union(bag4).Union(bag5).Union(bag6));
+                    new ConcurrentBag<FileInfo>(bag1.Union(bag2).Union(bag3).
+                    Union(bag4).Union(bag5).Union(bag6).Union(bag7)
+
+                    );
                 Obs(finalCollection, observer);
                 observer.OnCompleted();
             });
