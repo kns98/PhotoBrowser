@@ -68,20 +68,7 @@
                       Template="{StaticResource scrollViewTemplate}"
                       ItemsPanel="{StaticResource gridViewTemplate}" />
 
-        <Grid Grid.Row="2"
-              Visibility="{Binding ShowError, Converter={StaticResource boolToVisibilityConverter}}"
-              Background="#D0FFFFFF">
-            <StackPanel HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-
-                <TextBlock Text=":("
-                           TextAlignment="Center"
-                           Foreground="DarkGray"
-                           FontSize="70"
-                           Margin="0, 0, 0, 10" />
-
-            </StackPanel>
-        </Grid>
+     
 
     </Grid>
 </Window>

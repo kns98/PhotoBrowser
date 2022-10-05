@@ -92,13 +92,13 @@ namespace PhotoAlbum
 
                 var fileQuery7 = _fileQuery7.ToArray();
 
-                var len1 = Math.Min(10, fileQuery1.Length / 10);
-                var len2 = Math.Min(10, fileQuery2.Length / 10);
-                var len3 = Math.Min(10, fileQuery3.Length / 10);
+                var len1 = Math.Min(30, fileQuery1.Length / 10);
+                var len2 = Math.Min(30, fileQuery2.Length / 10);
+                var len3 = Math.Min(30, fileQuery3.Length / 10);
                 var len4 = Math.Min(50, fileQuery4.Length / 10);
                 var len5 = Math.Min(50, fileQuery5.Length / 10);
-                var len6 = Math.Min(10, fileQuery6.Length / 10);
-                var len7 = Math.Min(10, fileQuery7.Length / 10);
+                var len6 = Math.Min(30, fileQuery6.Length / 10);
+                var len7 = Math.Min(30, fileQuery7.Length / 10);
 
                 var bag1 = Add(new FileInfo[len1], new Random(), fileQuery1);
                 var bag2 = Add(new FileInfo[len2], new Random(), fileQuery2);
